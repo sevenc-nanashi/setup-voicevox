@@ -1,0 +1,30 @@
+name: "Hello World"
+description: "Greet someone and record the time"
+inputs:
+  download-item:
+    description: "ダウンロードするもの。"
+    required: true
+  path:
+    description: "ダウンロード先のパス。"
+    required: true
+  version:
+    description: "ダウンロードするバージョン。"
+    required: false
+    default: "latest"
+  platform:
+    description: "ダウンロードするプラットフォーム。"
+    required: false
+    default: "auto"
+  gpu:
+    description: "GPU版をダウンロードするかどうか。"
+    required: false
+    default: "cpu"
+outputs:
+  entrypoint:
+    description: "エントリーポイントへのフルパス。"
+  open_jtalk_dic_dir:
+    description: "Open JTalkの辞書ディレクトリへのフルパス。"
+
+runs:
+  using: "node16"
+  main: "dist/index.js"
