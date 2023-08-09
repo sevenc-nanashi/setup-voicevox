@@ -1,5 +1,8 @@
-name: "Hello World"
-description: "Greet someone and record the time"
+name: "Setup Voicevox"
+description: "Voicevox CoreまたはVoicevox Engineをダウンロードします。"
+branding:
+  icon: "download"
+  color: "green"
 inputs:
   download-item:
     description: "ダウンロードするもの。"

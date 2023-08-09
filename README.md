@@ -6,11 +6,11 @@ Voicevox をダウンロードする GitHub Action。
 
 ### `download-item`
 
-**必須：**ダウンロードするもの。`engine`または`core`を指定します。
+**必須：** ダウンロードするもの。`engine`または`core`を指定します。
 
 ### `path`
 
-**必須：**ダウンロード先のパス。`(path)/voicevox_core.dll`/`(path)/run.exe`のようにダウンロードされます。
+**必須：** ダウンロード先のパス。`(path)/voicevox_core.dll`/`(path)/run.exe`のようにダウンロードされます。
 
 ### `version`
 
@@ -38,4 +38,8 @@ Voicevox のエントリーポイント。`run.exe`または`voicevox_core.dll`�
 
 ### `open_jtalk_dic_dir`
 
-Open JTalk の辞書ディレクトリへのフルパス。
+Open JTalk の辞書ディレクトリへのフルパス。エンジンダウンロード時は空文字列になります。
+
+## ライセンス
+
+MIT License で公開しています。
