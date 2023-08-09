@@ -2,6 +2,9 @@
 
 Voicevox をダウンロードする GitHub Action。
 
+> **Warning**
+> この Action は非公式です。
+
 ## 入力（Inputs）
 
 ### `download-item`
