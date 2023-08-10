@@ -5,6 +5,19 @@ Voicevox をダウンロードする GitHub Action。
 > **Warning**
 > この Action は非公式です。
 
+```yml
+- name: Download voicevox
+  id: download-voicevox
+  uses: sevenc-nanashi/setup-voicevox@v0.1
+  with:
+    download-item: "core"
+    path: voicevox_core
+    version: 0.15.0-preview.5
+- name: Print location
+  run: |
+    echo ${{ steps.download-voicevox.outputs.entrypoint }} # => .../voicevox_core/libvoicevox_core.so
+```
+
 ## 入力（Inputs）
 
 ### `download-item`
@@ -37,11 +50,12 @@ GPU 版をダウンロードするかどうか。
 
 ### `entrypoint`
 
-Voicevox のエントリーポイント。`run.exe`または`voicevox_core.dll`のいずれかです。
+Voicevox のエントリーポイントへのフルパス。
+エンジンなら`run`、コアなら`libvoicevox_core.so`（dll/dylib）のフルパスが帰ります。
 
 ### `open_jtalk_dic_dir`
 
-Open JTalk の辞書ディレクトリへのフルパス。エンジンダウンロード時は空文字列になります。
+Open JTalk の辞書ディレクトリへのフルパス。エンジンダウンロード時は空文字列が帰ります。
 
 ## ライセンス
 
