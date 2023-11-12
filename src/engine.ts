@@ -10,14 +10,19 @@ import {
   download,
   spawn,
   randomString,
-  Release,
+  resolveRepository,
 } from "./common";
 import { download7z } from "./sevenzip";
 
 export const downloadEngine: Downloader = async (options) => {
+  const repo = resolveRepository(
+    "voicevox/voicevox_engine",
+    "voicevox/voicevox_nemo_engine",
+    options.repository
+  );
+  action.info(`リポジトリ：${repo.owner}/${repo.repo}`);
   const releases = await octokit.rest.repos.listReleases({
-    owner: "voicevox",
-    repo: "voicevox_engine",
+    ...repo,
     per_page: 100,
   });
   const release = await resolveVersion(options.version, releases.data);
@@ -55,9 +60,9 @@ export const downloadEngine: Downloader = async (options) => {
     suffix = "x64";
   }
   engineName += `-${suffix}`;
-  const assetName = `voicevox_engine-${engineName}`;
+  const assetName = `-${engineName}`;
   const fileListAsset = release.assets.find(
-    (asset) => asset.name.startsWith(assetName) && asset.name.endsWith(".txt")
+    (asset) => asset.name.includes(assetName) && asset.name.endsWith(".txt")
   );
   if (!fileListAsset) {
     throw new Error("ファイルリストが見つかりませんでした（バグ？）");

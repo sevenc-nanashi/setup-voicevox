@@ -3,12 +3,17 @@ import * as fs from "fs/promises";
 import { tmpdir } from "os";
 import path from "path";
 
-import { octokit, Downloader, resolveVersion, download, spawn } from "./common";
+import { octokit, Downloader, resolveVersion, download, spawn, resolveRepository } from "./common";
 
 export const downloadCore: Downloader = async (options) => {
+  const repo = resolveRepository(
+    "voicevox/voicevox_core",
+    "voicevox/voicevox_nemo_core",
+    options.repository
+  );
+  action.info(`リポジトリ：${repo.owner}/${repo.repo}`);
   const releases = await octokit.rest.repos.listReleases({
-    owner: "voicevox",
-    repo: "voicevox_core",
+    ...repo,
     per_page: 100,
   });
   const release = await resolveVersion(options.version, releases.data);

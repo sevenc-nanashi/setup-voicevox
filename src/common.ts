@@ -23,6 +23,10 @@ export const inputSchema = z.object({
     ])
     .default("auto"),
   gpu: z.enum(["cpu", "gpu", "directml", "cuda"]).default("cpu"),
+  repository: z
+    .enum(["default", "nemo"])
+    .or(z.string().regex(/[a-zA-Z0-9-]+\/[a-zA-Z0-9-]+/))
+    .default("default"),
 });
 export type Result = {
   entrypoint: string;
@@ -133,4 +137,27 @@ export const randomString = (length: number) => {
     result += chars[Math.floor(Math.random() * chars.length)];
   }
   return result;
+};
+
+/**
+ * リポジトリを解決する。
+ * @param defaultRepo デフォルトのリポジトリ
+ * @param nemoRepo Nemoのリポジトリ
+ * @param repository リポジトリ
+ * @returns 解決されたリポジトリ
+ */
+export const resolveRepository = (
+  defaultRepo: string,
+  nemoRepo: string,
+  repository: string
+): { owner: string; repo: string } => {
+  let repo = repository;
+  if (repository === "default") {
+    repo = defaultRepo;
+  }
+  if (repository === "nemo") {
+    repo = nemoRepo;
+  }
+  const [sOwner, sRepo] = repo.split("/");
+  return { owner: sOwner, repo: sRepo };
 };

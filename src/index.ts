@@ -10,6 +10,7 @@ const main = async () => {
     version: core.getInput("version"),
     platform: core.getInput("platform") || "auto",
     gpu: core.getInput("gpu"),
+    repository: core.getInput("repository"),
   });
 
   let res: Result;

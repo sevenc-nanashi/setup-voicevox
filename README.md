@@ -22,7 +22,7 @@ Voicevox をダウンロードする GitHub Action。
 
 ### `download-item`
 
-**必須：** ダウンロードするもの。`engine`または`core`を指定します。
+**必須：** ダウンロードするもの。`engine`、`core`のいずれかを指定します。
 
 ### `path`
 
@@ -32,6 +32,13 @@ Voicevox をダウンロードする GitHub Action。
 
 ダウンロードするバージョン。
 具体的なバージョン、`latest`/`stable`（最新版）、`prerelease`（最新のプレリリース版）が指定できます。デフォルトは`latest`。
+
+### `repository`
+
+ダウンロード元のリポジトリ。
+`default`、`nemo`、`{ユーザー名}/{リポジトリ名}`のいずれかを指定します。
+デフォルトは[`VOICEVOX`](https://github.com/voicevox)からダウンロードします。
+`nemo`を指定すると、VOICEVOX Nemoのエンジン/コアをダウンロードします。
 
 ### `platform`
 
