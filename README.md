@@ -38,7 +38,7 @@ Voicevox をダウンロードする GitHub Action。
 ダウンロード元のリポジトリ。
 `default`、`nemo`、`{ユーザー名}/{リポジトリ名}`のいずれかを指定します。
 デフォルトは[`VOICEVOX`](https://github.com/voicevox)からダウンロードします。
-`nemo`を指定すると、VOICEVOX Nemoのエンジン/コアをダウンロードします。
+`nemo`を指定すると、[VOICEVOX Nemo](https://voicevox.hiroshiba.jp/nemo) のエンジン/コアをダウンロードします。
 
 ### `platform`
 
@@ -49,8 +49,8 @@ Voicevox をダウンロードする GitHub Action。
 ### `gpu`
 
 GPU 版をダウンロードするかどうか。
-`cpu`、`gpu`、`directml`、`cuda`のいずれかを指定します
-。`gpu`では、Windows では DirectML 版、それ以外では CUDA 版をダウンロードします。
+`cpu`、`gpu`、`directml`、`cuda`のいずれかを指定します。
+`gpu`では、Windows では DirectML 版、それ以外では CUDA 版をダウンロードします。
 デフォルトは`cpu`。
 
 ## 出力（Outputs）
