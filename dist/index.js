@@ -42213,7 +42213,8 @@ var inputSchema = z.object({
     "linux-x64",
     "linux-arm64"
   ]).default("auto"),
-  gpu: z.enum(["cpu", "gpu", "directml", "cuda"]).default("cpu")
+  gpu: z.enum(["cpu", "gpu", "directml", "cuda"]).default("cpu"),
+  repository: z.enum(["default", "nemo"]).or(z.string().regex(/[a-zA-Z0-9-]+\/[a-zA-Z0-9-]+/)).default("default")
 });
 var octokit = new import_octokit.Octokit({
   auth: process.env.GITHUB_TOKEN,
@@ -42281,6 +42282,17 @@ var randomString = (length) => {
   }
   return result;
 };
+var resolveRepository = (defaultRepo, nemoRepo, repository) => {
+  let repo = repository;
+  if (repository === "default") {
+    repo = defaultRepo;
+  }
+  if (repository === "nemo") {
+    repo = nemoRepo;
+  }
+  const [sOwner, sRepo] = repo.split("/");
+  return { owner: sOwner, repo: sRepo };
+};
 
 // src/core.ts
 var action = __toESM(require_core());
@@ -42288,9 +42300,14 @@ var fs = __toESM(require("fs/promises"));
 var import_os = require("os");
 var import_path = __toESM(require("path"));
 var downloadCore = async (options) => {
+  const repo = resolveRepository(
+    "voicevox/voicevox_core",
+    "voicevox/voicevox_nemo_core",
+    options.repository
+  );
+  action.info(`\u30EA\u30DD\u30B8\u30C8\u30EA\uFF1A${repo.owner}/${repo.repo}`);
   const releases = await octokit.rest.repos.listReleases({
-    owner: "voicevox",
-    repo: "voicevox_core",
+    ...repo,
     per_page: 100
   });
   const release = await resolveVersion(options.version, releases.data);
@@ -42433,9 +42450,14 @@ var download7z = async () => {
 
 // src/engine.ts
 var downloadEngine = async (options) => {
+  const repo = resolveRepository(
+    "voicevox/voicevox_engine",
+    "voicevox/voicevox_nemo_engine",
+    options.repository
+  );
+  action2.info(`\u30EA\u30DD\u30B8\u30C8\u30EA\uFF1A${repo.owner}/${repo.repo}`);
   const releases = await octokit.rest.repos.listReleases({
-    owner: "voicevox",
-    repo: "voicevox_engine",
+    ...repo,
     per_page: 100
   });
   const release = await resolveVersion(options.version, releases.data);
@@ -42473,9 +42495,9 @@ var downloadEngine = async (options) => {
     suffix = "x64";
   }
   engineName += `-${suffix}`;
-  const assetName = `voicevox_engine-${engineName}`;
+  const assetName = `-${engineName}`;
   const fileListAsset = release.assets.find(
-    (asset) => asset.name.startsWith(assetName) && asset.name.endsWith(".txt")
+    (asset) => asset.name.includes(assetName) && asset.name.endsWith(".txt")
   );
   if (!fileListAsset) {
     throw new Error("\u30D5\u30A1\u30A4\u30EB\u30EA\u30B9\u30C8\u304C\u898B\u3064\u304B\u308A\u307E\u305B\u3093\u3067\u3057\u305F\uFF08\u30D0\u30B0\uFF1F\uFF09");
@@ -42528,7 +42550,8 @@ var main = async () => {
     path: core.getInput("path"),
     version: core.getInput("version"),
     platform: core.getInput("platform") || "auto",
-    gpu: core.getInput("gpu")
+    gpu: core.getInput("gpu"),
+    repository: core.getInput("repository")
   });
   let res;
   if (input.downloadItem === "engine") {
